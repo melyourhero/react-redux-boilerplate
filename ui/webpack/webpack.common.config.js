@@ -10,7 +10,7 @@ module.exports = {
   target: 'web',
   devtool: 'source-map',
   entry: {
-    app: ['@babel/polyfill', './src/main.tsx'],
+    app: ['./src/main.tsx'],
   },
   output: {
     path: path.resolve('./build/resources/static'),
@@ -23,10 +23,14 @@ module.exports = {
         enforce: 'pre',
         test:  /\.tsx?$/,
         exclude: /node_modules/,
-        loader: 'tslint-loader',
-        options: {
-          formatter: 'stylish'
-        }
+        use: [
+          {
+            loader: 'tslint-loader',
+            options: {
+              formatter: 'stylish'
+            },
+          }
+        ],
       },
       {
         test: /\.css/,
@@ -91,10 +95,14 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|gif|svg|ttf)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 2048
-        }
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 2048
+            },
+          },
+        ],
       }
     ]
   },

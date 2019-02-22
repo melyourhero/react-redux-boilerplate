@@ -1,6 +1,7 @@
-const config = require('./webpack.common.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+
+const config = require('./webpack.common.config');
 
 config.mode = 'production';
 config.output.publicPath = '';

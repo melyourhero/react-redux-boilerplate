@@ -6,6 +6,7 @@ import { applyName } from './Actions';
 
 interface Props {
   applyName: typeof applyName;
+  name: string;
 }
 
 class General extends React.PureComponent<Props>  {
@@ -14,11 +15,12 @@ class General extends React.PureComponent<Props>  {
   }
 
   public render() {
+    const { name } = this.props;
     return (
       <div>
-        General
+        General name: {name}
         <button onClick = {this.handleApplyName}>
-          Click to change name
+          Click to apply name
         </button>
       </div>
     );

@@ -1,8 +1,9 @@
 /* global require*/
-const config = require('./webpack.common.config');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
+
+const config = require('./webpack.common.config');
 
 config.mode = 'development';
 
@@ -21,40 +22,28 @@ config.module.rules = config.module.rules.concat([
     enforce: 'pre',
     test:  /\.tsx?$/,
     include: /src/,
-    loader: 'tslint-loader',
-    options: {
-      // type info introduce big delay during dev compilation
-      // typeCheck: true,
-      // tsConfigFile: path.join(__dirname, '../tsconfig.json'),
-      formatter: 'stylish'
-    }
-  },
-  {
-    test: /\.tsx?$/,
-    include: /(src)/,
     use: [
       {
-        loader: 'babel-loader',
+        loader: 'tslint-loader',
         options: {
-          cacheDirectory: true,
-          babelrc: false,
-          presets: [
-            [
-              "@babel/preset-env",
-              {
-                targets: {
-                  browsers: "last 2 versions",
-                },
-              },
-            ],
-            "@babel/preset-typescript",
-            "@babel/preset-react"
-          ],
-          plugins: [
-            ["@babel/plugin-proposal-class-properties", { loose: true }],
-            "react-hot-loader/babel",
-          ]
+          formatter: 'stylish'
         },
+      },
+    ],
+  },
+  {
+    test: /\.(ts|tsx)$/,
+    include: /src/,
+    use: [
+      {
+        loader: 'awesome-typescript-loader',
+        options: {
+          cacheDirectory: 'build/.awcache',
+          // As an experimental attempt probalby after removing react-hot loader from babel
+          // this is not needed anymore
+          // useBabel: true,
+          useCache: true,
+        }
       },
     ]
   }
