@@ -3,6 +3,7 @@
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules"
   ],
+  "defaultSeverity": "warning",
   "rules": {
     "object-curly-spacing": [true, "always"],
     "quotemark": [true, "single"],

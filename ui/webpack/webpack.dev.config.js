@@ -2,6 +2,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
+const threadLoader = require('thread-loader');
+
+threadLoader.warmup({}, [
+  'babel-loader',
+]);
 
 const config = require('./webpack.common.config');
 
@@ -17,39 +24,66 @@ config.devServer = {
 
 config.devtool = 'source-map';
 
-config.module.rules = config.module.rules.concat([
-  {
-    enforce: 'pre',
-    test:  /\.tsx?$/,
-    include: /src/,
-    use: [
+const babelOptions = {
+  cacheDirectory: true,
+  babelrc: false,
+  presets: [
+    [
+      '@babel/preset-env',
       {
-        loader: 'tslint-loader',
-        options: {
-          formatter: 'stylish'
+        targets: {
+          browsers: 'last 2 versions',
         },
       },
     ],
-  },
+    '@babel/preset-typescript',
+    '@babel/preset-react',
+  ],
+  plugins: [
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    'react-hot-loader/babel',
+  ],
+};
+
+config.module.rules = config.module.rules.concat([
   {
-    test: /\.(ts|tsx)$/,
+    test: /\.ts(x?)$/,
+    exclude: /node_modules/,
     include: /src/,
+    // TODO: improve parallelising builds and cache strategy
     use: [
       {
-        loader: 'awesome-typescript-loader',
-        options: {
-          cacheDirectory: 'build/.awcache',
-          // As an experimental attempt probalby after removing react-hot loader from babel
-          // this is not needed anymore
-          // useBabel: true,
-          useCache: true,
-        }
+        loader: 'cache-loader',
       },
-    ]
+      {
+        loader: 'thread-loader',
+        options: {
+          // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+          workers: require('os').cpus().length - 1,
+          poolTimeout: Infinity
+        },
+      },
+      {
+        loader: 'babel-loader',
+        options: babelOptions,
+      },
+      {
+        loader: 'ts-loader',
+        options: {
+          happyPackMode: true,
+          transpileOnly: true,
+        },
+      },
+    ],
   }
 ]);
 
 config.plugins = config.plugins.concat([
+  new ForkTsCheckerWebpackPlugin({
+    measureCompilationTime: true,
+    tslint: path.resolve('./tslint.json'),
+    useTypescriptIncrementalApi: true,
+  }),
   new HtmlWebpackPlugin({
     inject: false,
     template: require('html-webpack-template'),

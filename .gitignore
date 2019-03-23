@@ -32,7 +32,6 @@
 # Generated files/directories
 target
 build
-.awcache/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -71,13 +70,8 @@ gradle-app.setting
 node_modules/
 package-lock.json
 
-*.log*
-ui/src/utils/logger/logger.config.js
-classes
-
-# unignore
-# Gradle wrapper package
-!/gradle/wrapper/*
-
 #compiler trash - dist
 ui/dist
+
+#webpack loaders cache
+ui/.cache-loader

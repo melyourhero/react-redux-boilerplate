@@ -10,7 +10,7 @@ module.exports = {
   target: 'web',
   devtool: 'source-map',
   entry: {
-    app: ['./src/main.tsx'],
+    app: ['@babel/polyfill', './src/main.tsx'],
   },
   output: {
     path: path.resolve('./build/resources/static'),
@@ -21,7 +21,7 @@ module.exports = {
     rules: [
       {
         enforce: 'pre',
-        test:  /\.tsx?$/,
+        test: /\.ts(x?)$/,
         exclude: /node_modules/,
         use: [
           {
