@@ -40,7 +40,7 @@ const handleActionsCreator = (processor: typeof immer) => (reducerMap: TypedObje
   }
   ownKeys(reducerMap).forEach(validateActionType);
   return (state = initState, action: Action) => {
-    return processor(state, (draft) => {
+    return processor(state, (draft: any) => {
       const reducer = reducerMap[action.type];
       if (!reducer) {
         return;

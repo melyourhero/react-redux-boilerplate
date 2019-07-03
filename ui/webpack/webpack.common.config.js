@@ -17,6 +17,9 @@ module.exports = {
     filename: '[name].[hash].js',
     publicPath: '/'
   },
+  optimization: {
+    namedModules: true,
+  },
   module: {
     rules: [
       {
@@ -41,7 +44,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[name]__[local]--[hash:base64:5]'
+              // localIdentName: '[name]__[local]--[hash:base64:5]'
             }
           }
         ],
@@ -55,7 +58,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[name]__[local]--[hash:base64:5]'
+              // localIdentName: '[name]__[local]--[hash:base64:5]'
             }
           },
           {
@@ -120,7 +123,6 @@ module.exports = {
       },
       __DEV__: devMode
     }),
-    new webpack.NamedModulesPlugin(),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
