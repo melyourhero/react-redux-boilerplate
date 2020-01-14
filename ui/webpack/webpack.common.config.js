@@ -64,8 +64,10 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              includePaths: ['./node_modules/'],
-              importer: jsonImporter,
+              sassOptions: {
+                importer: jsonImporter,
+                includePaths: ['./node_modules/'],
+              },
             },
           }
         ],
@@ -91,7 +93,9 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              importer: jsonImporter,
+              sassOptions: {
+                importer: jsonImporter,
+              },
             },
           }
         ]

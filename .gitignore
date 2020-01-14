@@ -68,7 +68,6 @@ gradle-app.setting
 
 # modules folder in node
 node_modules/
-package-lock.json
 
 #compiler trash - dist
 ui/dist
